@@ -1,14 +1,16 @@
 #include "text.h"
 
 struct node_struct *txt2words( FILE *fp ){
-    const char blank [100]="BLANK LINE";
+    const char blank [10]="\n";
     Node *head;
     Node* node;
     char *data;
     int count;
     char *toFree;
     char *string;
+
     head=NULL;
+
     /*Allocate the head*/
     head=malloc(sizeof(Node));
     head->data=NULL;
@@ -88,6 +90,95 @@ int lineEnds (char **string){
     }
     return 0;
 
+}
+
+void ftext( FILE *fp, struct node_struct *list ){
+
+    /*int characters=0;*/
+
+    while(list!=NULL){
+        if(list->data!=NULL){
+            
+            /*1. Print current word
+             *2. Check if you add a white space
+             *3. Determine if it is a space or newline
+             */
+
+            /*1. Print current word*/
+            fprintf(fp,"%s\n",(char*)list->data);
+
+
+            /*This part for later*/
+            /*if(*((char*)list->data)=='\n'){
+                characters=0;
+            } else{
+                characters+=strlen((char*)list->data);
+            }*/
+
+            /*2. Check if you add a white space*/
+            /*if(list->next!=NULL){
+                if(list->next->data!=NULL){
+                    if((isConditionOne((char*)list->data)&&!isConditionTwo((char*)list->next->data))||(isConditionThree((char*)list->data)&&isConditionFour((char*)list->next->data))){
+
+                        *//*3. Determine if it is a space or newline*/
+                        /*if((characters+strlen((char*)list->next->data)+1)<80){
+
+                            *//*Space*//*
+                            fprintf(fp," ");
+                            characters++;
+                        } else{
+                            
+                            *//*New line*//*
+                            fprintf(fp,"***CHARACTERS: %d\n",characters);
+                            characters=0;
+                        }
+
+                    }
+                }
+            }*/
+
+        }
+        list=list->next;
+
+    }
+
+}
+
+/**
+ * If word is (,) or (;) or (!) or (") or (.)
+ **/ 
+int isConditionOne(char *string){
+    /*switch(*string){
+        case ',': case ';': case: '!': case '\"': case ".":
+            return 1;
+        default:
+            return 0;
+    }*/
+    return(strcmp(string,",")*strcmp(string,";")*strcmp(string,"!")*strcmp(string,"\"")*strcmp(string,".")==0)?1:0;
+}
+
+/**
+ * If word is (") or (--)
+ **/
+int isConditionTwo(char *string){
+    return(strcmp(string,"\"")*strcmp(string,"--")==0)?1:0;
+}
+
+/**
+ * If last character is a letter or a number
+ **/
+int isConditionThree(char *string){
+    if(strlen(string)<1){
+        return 0;
+    }
+    return isAlphaNum(string[strlen(string)-1]);
+}
+
+/**
+ * If first character is a letter or a number
+ **/
+int isConditionFour(char *string){
+    return isAlphaNum(string[0]);
 }
 
 char *getWord(char **string){

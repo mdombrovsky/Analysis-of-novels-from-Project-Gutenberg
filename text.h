@@ -33,3 +33,11 @@ int isAlphaNum (char c);
 char *getWord(char **input);
 
 int lineEnds (char **string);
+
+int isConditionOne(char *string);
+
+int isConditionTwo(char *string);
+
+int isConditionThree(char *string);
+
+int isConditionFour(char *string);
