@@ -78,8 +78,8 @@ struct node_struct *txt2words( FILE *fp ){
 
 int lineEnds (char **string){
     
-    /*Gets rid of pesky characters and spaces*/
-    while(**string<0||**string==' '){
+    /*Gets rid of spaces*/
+    while(**string==' '){
         (*string)++;
     }
     if((**(string)=='\n')||((**string)=='\0')){
@@ -98,8 +98,8 @@ char *getWord(char **string){
     char unique;
     count=0;
 
-    /*Gets rid of pesky characters and spaces*/
-    while((**string)<0||(**string)==' '){
+    /*Gets rid of spaces*/
+    while((**string)==' '){
         (*string)++;
     }
 
