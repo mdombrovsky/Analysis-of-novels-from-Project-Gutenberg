@@ -1,10 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 struct node_struct{
     void *data;
     struct node_struct *next;
-}node;
+};
+
+typedef struct node_struct Node;
 
 struct node_struct *txt2words( FILE *fp ); 
 
@@ -21,3 +25,11 @@ void remove_repeats ( struct node_struct *list, int (*compar)(const void *, cons
 int length( struct node_struct *list ); 
 
 void free_list( struct node_struct *list, int free_data ); 
+
+int isType1(char *string);
+
+int isAlphaNum (char c);
+
+char *getWord(char **input);
+
+int lineEnds (char **string);
