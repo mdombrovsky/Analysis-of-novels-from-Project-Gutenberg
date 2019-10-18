@@ -19,6 +19,7 @@ typedef struct node_struct Node;
 /*Done*/
 struct node_struct *txt2words( FILE *fp ); 
 
+/*Done*/
 struct node_struct *search( struct node_struct *list, char *target, int (*compar)(const void *, const void *) ); 
 
 /*Done*/
@@ -43,6 +44,8 @@ void free_list( struct node_struct *list, int free_data );
  * HELPER FUNCTIONS
  * 
  **/
+
+struct node_struct *initHead();
 
 int isType1(char *string);
 

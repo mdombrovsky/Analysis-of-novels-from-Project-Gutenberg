@@ -9,14 +9,11 @@ struct node_struct *txt2words( FILE *fp ){
     char *toFree;
     char *string;
 
-    head=NULL;
+    head=initHead();
 
-    /*Allocate the head*/
-    head=malloc(sizeof(Node));
-    head->data=NULL;
+
+
     node=head;
-    node->next=NULL;
-
 
 
     string=(char*)malloc(sizeof(char)*257);
@@ -67,6 +64,16 @@ struct node_struct *txt2words( FILE *fp ){
    return headPlusOne(head);
 }
 
+struct node_struct *initHead(){
+    Node *head;
+    
+    /*Allocate the head*/
+    head=malloc(sizeof(Node));
+    head->data=NULL;
+    head->next=NULL;
+    return head;
+}
+
 struct node_struct *headPlusOne(struct node_struct *head){
     Node *node;
     /*This is the easiest way */
@@ -90,9 +97,7 @@ struct node_struct *copy( struct node_struct *start, struct node_struct *end ){
     Node *node;
     Node *toCopy;
 
-    head=malloc(sizeof(Node));
-    head->data=NULL;
-    head->next=NULL;
+    head=initHead();
 
     node=head;
 
@@ -115,6 +120,32 @@ struct node_struct *copy( struct node_struct *start, struct node_struct *end ){
 
 }
 
+
+struct node_struct *search( struct node_struct *list, char *target, int (*compar)(const void *, const void *) ){
+
+    Node *head;
+    Node *node;
+    
+    head=initHead();
+    node=head;
+
+    while(list!=NULL){
+        if(list->data!=NULL){
+            if((*compar) ((void *) list->data, (void *) target)==0){
+                /*Found*/
+                node->next=malloc(sizeof(Node));
+                node=node->next;
+                node->data=list;
+                node->next=NULL;
+            }
+        
+        }
+
+        list=list->next;
+    }
+    
+    return headPlusOne(head);
+}
 
 
 int lineEnds (char **string){
