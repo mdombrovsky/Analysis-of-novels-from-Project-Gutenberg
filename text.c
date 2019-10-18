@@ -64,6 +64,11 @@ struct node_struct *txt2words( FILE *fp ){
 
     }
    
+   return headPlusOne(head);
+}
+
+struct node_struct *headPlusOne(struct node_struct *head){
+    Node *node;
     /*This is the easiest way */
     node=head->next;
 
@@ -76,7 +81,41 @@ struct node_struct *txt2words( FILE *fp ){
         head=NULL;
     }
     return node;
+
+    
 }
+
+struct node_struct *copy( struct node_struct *start, struct node_struct *end ){
+    Node *head;
+    Node *node;
+    Node *toCopy;
+
+    head=malloc(sizeof(Node));
+    head->data=NULL;
+    head->next=NULL;
+
+    node=head;
+
+    toCopy=start;
+
+    while(toCopy!=NULL&&(toCopy!=end)){
+        node->next=malloc(sizeof(Node));
+        node=node->next;
+        node->data=toCopy->data;
+        node->next=NULL;
+        toCopy=toCopy->next;
+
+
+
+    }
+
+   return headPlusOne(head);
+
+
+
+}
+
+
 
 int lineEnds (char **string){
     
@@ -84,13 +123,23 @@ int lineEnds (char **string){
     while(**string==' '){
         (*string)++;
     }
-    if((**(string)=='\n')||((**string)=='\0')){
+    if((**(string)=='\n')||((**string)=='\0')||((**string)=='\r')){
         (*string)++;
         return 1;
     }
     return 0;
 
 }
+
+int length( struct node_struct *list ){
+    int count=0;
+    while(list!=NULL){
+        list=list->next;
+        count++;
+    }
+    return count;
+}
+
 
 void ftext( FILE *fp, struct node_struct *list ){
 
