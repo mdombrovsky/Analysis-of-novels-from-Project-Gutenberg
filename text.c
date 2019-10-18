@@ -120,6 +120,59 @@ struct node_struct *copy( struct node_struct *start, struct node_struct *end ){
 
 }
 
+/**
+ * Doesnt work!!! 
+ **/
+void remove_repeats ( struct node_struct *list, int (*compar)(const void *, const void *) ){
+    
+    Node *node;
+    Node *prevNode;
+
+    /*While the list is not null*/
+    while(list!=NULL){
+        /*While the list data is not null*/
+        if(list->data!=NULL){
+
+            /*Keep track of last node*/
+            prevNode=list;
+            node=prevNode->next;
+
+            
+            while(node!=NULL){
+                if(node->data!=NULL){
+                    if(((*compar)((void *) list->data, (void *) node->data))==0){
+                        prevNode->next=node->next;
+                        node->next=NULL;
+                        free_list(node,0);
+                        node=prevNode->next;
+                    }
+                    else{
+                          prevNode=node;
+                        node=prevNode->next;
+                    }
+
+
+                } 
+                else{
+                        prevNode=node;
+                        node=prevNode->next;
+                }
+
+                
+
+
+            }
+
+
+        }
+        list=list->next;
+    }
+
+
+
+
+}
+
 
 struct node_struct *search( struct node_struct *list, char *target, int (*compar)(const void *, const void *) ){
 

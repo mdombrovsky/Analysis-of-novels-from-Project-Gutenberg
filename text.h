@@ -28,8 +28,10 @@ struct node_struct *copy( struct node_struct *start, struct node_struct *end );
 /*Done*/
 void ftext( FILE *fp, struct node_struct *list ); 
 
+
 struct node_struct *sort( struct node_struct *list, int (*compar)(const void *, const void *) ); 
 
+/*Buggy need to finish sort to debug against valid results*/
 void remove_repeats ( struct node_struct *list, int (*compar)(const void *, const void *) ); 
 
 /*Done*/
