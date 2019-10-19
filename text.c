@@ -165,7 +165,6 @@ struct node_struct * txt2words(FILE * fp) {
 	Node * head;
 	Node * node;
 	char * data;
-	int count;
 	char * toFree;
 	char * string;
 
@@ -176,12 +175,8 @@ struct node_struct * txt2words(FILE * fp) {
 	string = (char * ) malloc(sizeof(char) * 257);
 	toFree = string;
 
-	count = 0;
 
-	/*Count is how many times this should be executed for debugging*/
-	while (fgets(string, 257, fp) != NULL && count >= 0) {
-
-		count++;
+	while (fgets(string, 257, fp) != NULL) {
 
 		/*If first line is a blank line*/
 		if (lineEnds( & string) == 1) {
@@ -364,9 +359,10 @@ struct node_struct * search(struct node_struct * list, char * target, int( * com
 int lineEnds(char ** string) {
 
 	/*Gets rid of spaces*/
-	while ( ** string == ' ') {
+	while (((** string) == ' ')) {
 		( * string) ++;
 	}
+
 
 	if (( ** (string) == '\n') || (( ** string) == '\0') || (( ** string) == '\r')) {
 		( * string) ++;
@@ -394,45 +390,58 @@ int length(struct node_struct * list) {
 void ftext(FILE * fp, struct node_struct * list) {
 
 	int characters = 0;
+	int isNewLine;
 
 	while (list != NULL) {
 		if (list -> data != NULL) {
-
 		/*1. Print current word
 		*2. Check if you add a white space
 		*3. Determine if it is a space or newline
 		*/
-
-		/*1. Print current word*/
-		fprintf(fp, "%s\n", (char * ) list -> data);
-
-		if ( * ((char * ) list -> data) == '\n') {
-			characters = 0;
-		} else {
-			characters += strlen((char * ) list -> data);
-		}
-
-		/*2. Check if you add a white space*/
-		if (list -> next != NULL) {
-			if (list -> next -> data != NULL) {
-			if ((isConditionOne((char * ) list -> data) && !isConditionTwo((char * ) list -> next -> data)) || (isConditionThree((char * ) list -> data) && isConditionFour((char * ) list -> next -> data))) {
-
-				/*3. Determine if it is a space or newline*/
-				if ((characters + strlen((char * ) list -> next -> data) + 1) < 80) {
-
-				/*Space*/
-				fprintf(fp, " ");
-				characters++;
-				} else {
-
-				/*New line*/
-				fprintf(fp, "***CHARACTERS: %d\n", characters);
+	
+			isNewLine=0;
+			if (((* ((char * ) list -> data) == '\n'))) {
+				fprintf(fp, "\n");
+				if(characters != 0){
+					fprintf(fp, "\n");
+					
+				}				
 				characters = 0;
-				}
+				isNewLine=1;
+			} else if ((((* ((char * ) list -> data) == '\r')))&&(* ((char * ) (list + 1) -> data) == '\n')) {
 
 			}
+			else {
+				characters += strlen((char * ) list -> data);
+				/*1. Print current word*/
+				fprintf(fp, "%s", (char * ) list -> data);
 			}
-		}
+
+			/*2. Check if you add a white space*/
+			if ((list -> next != NULL) && (isNewLine ==0)) {
+				if (list -> next -> data != NULL) {
+
+					if (((isConditionOne((char * ) list -> data) && (isConditionTwo((char * ) list -> next -> data))==0)) || ((isConditionThree((char * ) list -> data) && isConditionFour((char * ) list -> next -> data)))) {
+
+						/*3. Determine if it is a space or newline*/
+						if ((characters + strlen((char * ) list -> next -> data) + 1) < 80) {
+
+							/*Space*/
+							fprintf(fp, " ");
+							characters++;
+						} else {
+
+							/*New line*/
+							fprintf(fp, "\n");
+							/*fprintf(fp, "***CHARACTERS: %d\n", characters);*/
+							
+							characters = 0;
+						}
+
+					}
+				}
+			
+			}
 
 		}
 		list = list -> next;
@@ -531,6 +540,8 @@ char * getWord(char ** string) {
 		strncpy(data, subString, count);
 
 	}
+
+
 	return data;
 
 }
