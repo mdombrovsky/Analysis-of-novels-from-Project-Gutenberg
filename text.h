@@ -16,28 +16,20 @@ typedef struct node_struct Node;
  * 
  **/
 
-/*Done*/
 struct node_struct *txt2words( FILE *fp ); 
 
-/*Done*/
 struct node_struct *search( struct node_struct *list, char *target, int (*compar)(const void *, const void *) ); 
 
-/*Done*/
 struct node_struct *copy( struct node_struct *start, struct node_struct *end ); 
 
-/*Done*/
 void ftext( FILE *fp, struct node_struct *list ); 
-
 
 struct node_struct *sort( struct node_struct *list, int (*compar)(const void *, const void *) ); 
 
-/*Buggy need to finish sort to debug against valid results*/
 void remove_repeats ( struct node_struct *list, int (*compar)(const void *, const void *) ); 
 
-/*Done*/
 int length( struct node_struct *list ); 
 
-/*Done*/
 void free_list( struct node_struct *list, int free_data ); 
 
 
@@ -46,6 +38,13 @@ void free_list( struct node_struct *list, int free_data );
  * HELPER FUNCTIONS
  * 
  **/
+
+
+struct node_struct *mergeSort(struct node_struct *list,int (*compar)(const void *, const void *));
+
+int split( struct node_struct *list, struct node_struct **one, struct node_struct **two);
+
+struct node_struct *merge( struct node_struct *one, struct node_struct *two, int (*compar)(const void *, const void *) );
 
 struct node_struct *initHead();
 

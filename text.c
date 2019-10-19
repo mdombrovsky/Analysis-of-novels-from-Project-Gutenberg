@@ -1,5 +1,166 @@
 #include "text.h"
 
+
+int split( struct node_struct *list, struct node_struct **one, struct node_struct **two){
+    int i;
+
+    if(list->next==NULL){
+        /*Already Split up*/
+        return 1;
+    }
+    
+
+
+    fflush(stdout);
+    (*one)=list;
+
+   
+
+    for(i=0;i<length(list)/2-1;i++){
+        list=list->next;
+    }
+
+    (*two)=list->next;
+    list->next=NULL;
+
+
+
+
+    fflush(stdout);
+    fflush(stdout);
+    return 0;
+
+
+}
+
+struct node_struct *sort ( struct node_struct *list, int (*compar)(const void *, const void *) ){
+    Node *copiedList;
+
+    /*Creates copy that I can mess around with*/
+    copiedList=copy(list,NULL);
+
+        
+    return mergeSort(copiedList,compar);
+}
+
+struct node_struct *mergeSort(struct node_struct *list,int (*compar)(const void *, const void *)){
+    
+    Node *one;
+    Node *two;
+
+
+    if((list->next)==NULL)
+    {
+        return list;
+    }
+
+
+    split(list,&one,&two);
+
+
+
+    one=mergeSort(one,compar);
+    two=mergeSort(two,compar);
+    return merge(one,two,compar);
+
+
+
+}
+
+struct node_struct *merge( struct node_struct *one, struct node_struct *two, int (*compar)(const void *, const void *) ){
+
+    Node *head;
+    Node *node;
+    Node *temp;
+ 
+    head=initHead();
+    node=head;
+
+
+    /*While both are not null*/
+    while(one!=NULL&&two!=NULL){
+
+        /*Make sure that the data is not null
+         *This should never be executed
+         *But I have it in here because I dont like segmentation faults
+         */
+        if(one->data==NULL){
+            temp=one;
+            one=one->next;
+            temp->next=NULL;
+            free_list(temp,0);
+            continue;
+        }
+
+        if(two->data==NULL){
+            temp=two;
+            two=two->next;
+            temp->next=NULL;
+            free_list(temp,0);
+            continue;
+        }
+
+ 
+        if( ((*compar)((void*)one->data,(void*)two->data))<=0 ){
+            node->next=one;
+            node=one;            
+            one=one->next;
+            node->next=NULL;
+            
+        } else{
+            node->next=two;      
+            node=two;      
+            two=two->next;
+            node->next=NULL;
+        }
+    }
+   
+
+    /*If one is not null*/
+    while(one!=NULL){
+        /*Make sure that the data is not null*/
+        if(one->data==NULL){
+            temp=one;
+            one=one->next;
+            temp->next=NULL;
+            free_list(temp,0);
+            continue;
+        }
+        node->next=one;
+        node=one;            
+        one=one->next;
+        node->next=NULL;
+
+    }
+
+    /*If two is not  null*/
+    while(two!=NULL){
+        /*Make sure that the data is not null*/
+        if(two->data==NULL){
+            temp=two;
+            two=two->next;
+            temp->next=NULL;
+            free_list(temp,0);
+            continue;
+        }
+        node->next=two;
+        node=two;            
+        two=two->next;
+        node->next=NULL;
+
+    }
+
+
+    return headPlusOne(head);
+}
+
+
+
+
+
+
+
+
 struct node_struct *txt2words( FILE *fp ){
     const char blank [10]="\n";
     Node *head;
@@ -338,7 +499,6 @@ char *getWord(char **string){
         data=malloc(count+1);
         strncpy(data,subString,count);
         data[count]='\0';
-        /*printf("Data: |%s|\n",data);*/
   
     } else {
         subString=*string;
@@ -352,7 +512,6 @@ char *getWord(char **string){
 
         data[count]='\0';
         strncpy(data,subString, count);
-        /*printf("Data: |%s|\n",data);*/
 
 
 
@@ -369,16 +528,13 @@ char *getWord(char **string){
 void free_list( struct node_struct *list, int free_data ){
     Node *temp;
 
-    /*printf ("Free list\n");*/
     while(list!=NULL){
         temp=list;
     
         list=list->next;
-        /*printf("Freeing: %s\n",(char*) temp->data);*/
 
         if(free_data!=0){
             if(temp->data){
-                /*printf("Freed\n");*/
 
                 free(temp->data);
                 temp->data=NULL;
@@ -398,7 +554,7 @@ void free_list( struct node_struct *list, int free_data ){
 
 
 int isType1(char *string){
-    if((isAlphaNum(*string))||((*(string)=='\'')&&((*(string+1)==('-'))||(isAlphaNum(*(string+1)))))||((*(string)=='-')&&((*(string+1)==('\''))||(isAlphaNum(*(string+1))))))
+    if((isAlphaNum(*string))  ||  ( (*(string)=='\'') && (*(string+1)!=('\'')) )|| ( (*(string)=='-') && ((*(string+1)!=('-')))  ))
     {
         return 1;
     } else{
