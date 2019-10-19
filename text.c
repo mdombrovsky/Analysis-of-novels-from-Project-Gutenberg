@@ -420,7 +420,7 @@ void ftext(FILE * fp, struct node_struct * list) {
 			/*2. Check if you add a white space*/
 			if ((list -> next != NULL) && (isNewLine ==0)) {
 				if (list -> next -> data != NULL) {
-
+					
 					if (((isConditionOne((char * ) list -> data) && (isConditionTwo((char * ) list -> next -> data))==0)) || ((isConditionThree((char * ) list -> data) && isConditionFour((char * ) list -> next -> data)))) {
 
 						/*3. Determine if it is a space or newline*/
@@ -471,14 +471,23 @@ void ftextDEBUG(FILE * fp, struct node_struct * list) {
  * If word is (,) or (;) or (!) or (") or (.)
  **/
 int isConditionOne(char * string) {
-  	return (strcmp(string, ",") * strcmp(string, ";") * strcmp(string, "!") * strcmp(string, "\"") * strcmp(string, ".") == 0) ? 1 : 0;
+	if(strlen(string) == 1){
+  		return ((((*string) == ',') + ((*string) == ';') + ((*string) == '!') + ((*string) == '"') + (strcmp(string, "”") == 0) + (strcmp(string, "“") == 0) + ((*string) == '.')));
+	}
+
+	return ((strcmp(string, "”") == 0) || (strcmp(string, "“") == 0));
 }
 
 /**
  * If word is (") or (--)
  **/
 int isConditionTwo(char * string) {
-  	return (strcmp(string, "\"") * strcmp(string, "--") == 0) ? 1 : 0;
+	if(strlen(string) == 1){
+  		return ((((*string) == '"') || (strcmp(string, "”") == 0) || (strcmp(string, "“") == 0)  || (((*string) == '-') && ((*(string+1)) == '-'))));
+
+	}
+
+	return ((strcmp(string, "”") == 0) || (strcmp(string, "“") == 0));
 }
 
 /**
